@@ -1,0 +1,626 @@
+/* =========================================================
+   Sahara Tijol, portfolio styles
+
+   The organising idea is a numbered manual. Every section and every
+   item inside it carries a clause number (2.1, 2.2, 3.1) hanging in
+   the left margin. All of those numbers come from CSS counters, so the
+   HTML never types one and adding an entry renumbers the rest.
+
+   Because the numbering carries the identity, labels are plain: no
+   uppercase tracking, no italics, no monospace.
+
+   Type: Fraunces (display and numerals) and Work Sans (everything else).
+   Themes: "paper" (warm, default) and "night". No gradients.
+   ========================================================= */
+
+/* ---------- 1. TOKENS ---------- */
+
+:root,
+:root[data-theme="paper"] {
+  --bg:          #F4EDE3;  /* warm paper */
+  --raised:      #FBF6EF;
+  --rule:        #E2D6C6;
+  --rule-strong: #C6B4A0;
+
+  --text:        #11151C;  /* Ink Black */
+  --muted:       #364156;  /* Charcoal Blue */
+  --faint:       #6E5F51;
+
+  --accent:      #AF4226;  /* Rosy Copper, deepened to hold on paper */
+  --accent-soft: rgba(175, 66, 38, .10);
+  --accent-text: #FBF6EF;
+  --rose:        #7D4E57;  /* Burnt Rose */
+  --moss:        #55654A;
+}
+
+:root[data-theme="night"] {
+  --bg:          #11151C;  /* Ink Black */
+  --raised:      #212D40;  /* Deep Space Blue */
+  --rule:        #283242;
+  --rule-strong: #46536B;
+
+  --text:        #F0EAE1;
+  --muted:       #B3BCCB;
+  --faint:       #8A94A6;
+
+  --accent:      #E0795F;  /* Rosy Copper, lifted for dark */
+  --accent-soft: rgba(224, 121, 95, .14);
+  --accent-text: #11151C;
+  --rose:        #C98F99;  /* Burnt Rose, lifted */
+  --moss:        #97AD86;
+}
+
+:root {
+  --display: "Fraunces", Georgia, "Times New Roman", serif;
+  --body: "Work Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* ---------- 2. RESET ---------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 24px;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--body);
+  font-size: 1.0625rem;
+  font-weight: 450;
+  line-height: 1.62;
+  -webkit-font-smoothing: antialiased;
+  transition: background-color .25s ease, color .25s ease;
+
+  counter-reset: block;   /* section numbers start here */
+}
+
+ul, ol { list-style: none; padding: 0; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; border: none; background: none; cursor: pointer; }
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--accent);
+  color: var(--accent-text);
+  padding: .7rem 1.1rem;
+  font-weight: 600;
+}
+.skip-link:focus { left: 0; }
+
+/* ---------- 3. THE NUMBERING ----------
+   .block counts sections. Each .block restarts an "item" counter, and
+   every .item inside bumps it, so an item prints as section.item. */
+
+.block { counter-increment: block; counter-reset: item; }
+.item  { counter-increment: item; }
+
+.block-num::before { content: counter(block); }
+.item-num::before  { content: counter(block) "." counter(item); }
+
+.block-num,
+.item-num {
+  font-family: var(--display);
+  font-weight: 600;
+  font-variant-numeric: lining-nums;
+  letter-spacing: -.01em;
+}
+
+/* ---------- 4. LAYOUT ---------- */
+
+.layout {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  min-height: 100vh;
+}
+
+.rail { border-right: 1px solid var(--rule-strong); }
+
+.rail-inner {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  padding: 54px 38px 40px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+
+.identity { margin-bottom: 2.4rem; }
+.rail-foot { margin-top: auto; padding-top: 2.5rem; }
+
+main {
+  padding: 54px 64px 72px;
+  max-width: 900px;
+}
+
+/* ---------- 5. RAIL ---------- */
+
+.name span { display: block; }
+
+.name {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(2.5rem, 3.4vw, 3.1rem);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 40, "WONK" 1;
+  line-height: .98;
+  letter-spacing: -.02em;
+  margin-bottom: .7rem;
+}
+.name:hover { color: var(--accent); }
+
+.role {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--accent);
+  line-height: 1.35;
+}
+
+.place { font-size: .88rem; color: var(--faint); margin-top: .1rem; }
+
+.contents-label {
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--faint);
+  padding-bottom: .55rem;
+  border-bottom: 2px solid var(--rule-strong);
+  margin-bottom: .1rem;
+}
+
+/* The rail runs its own counter so the list matches the section numbers. */
+.contents-list { counter-reset: nav; }
+.contents-list li { counter-increment: nav; }
+
+.contents-list a,
+.pending {
+  display: block;
+  padding: .5rem 0 .5rem 1.9rem;
+  position: relative;
+  border-bottom: 1px solid var(--rule);
+  font-size: .96rem;
+  font-weight: 500;
+  color: var(--muted);
+  transition: color .16s ease;
+}
+
+.contents-list a::before,
+.pending::before {
+  content: counter(nav);
+  position: absolute;
+  left: 0;
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: .92rem;
+  color: var(--rose);
+}
+
+.contents-list a:hover,
+.contents-list a:hover::before,
+.contents-list a.is-active,
+.contents-list a.is-active::before { color: var(--accent); }
+
+/* The blog row: visible, clearly not ready, not clickable. */
+.pending { color: var(--faint); cursor: default; }
+.pending em {
+  font-style: normal;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--moss);
+  float: right;
+}
+
+.rail-foot {
+  display: flex;
+  flex-direction: column;
+  gap: .35rem;
+  font-size: .87rem;
+  color: var(--faint);
+}
+
+.availability { display: flex; align-items: center; gap: .55rem; color: var(--muted); }
+.tick { width: 8px; height: 8px; background: var(--moss); flex-shrink: 0; }
+
+.theme-toggle {
+  display: flex;
+  align-items: center;
+  gap: .6rem;
+  margin-top: 1rem;
+  font-size: .87rem;
+  font-weight: 500;
+  color: var(--faint);
+  transition: color .16s ease;
+}
+.theme-toggle:hover { color: var(--accent); }
+
+.theme-track {
+  width: 32px;
+  height: 16px;
+  border: 1.5px solid var(--rule-strong);
+  padding: 2px;
+  display: flex;
+  transition: border-color .16s ease;
+}
+.theme-toggle:hover .theme-track { border-color: var(--accent); }
+
+.theme-knob {
+  width: 9px;
+  height: 9px;
+  background: var(--rose);
+  transition: transform .2s ease, background-color .2s ease;
+}
+:root[data-theme="night"] .theme-knob { transform: translateX(15px); background: var(--accent); }
+
+/* ---------- 6. OPENING ---------- */
+
+.opener { padding-bottom: clamp(44px, 6vw, 68px); }
+
+.lede {
+  font-family: var(--display);
+  font-size: clamp(1.9rem, 3.4vw, 2.6rem);
+  font-weight: 600;
+  font-variation-settings: "SOFT" 40, "WONK" 1;
+  line-height: 1.22;
+  letter-spacing: -.015em;
+  max-width: 17em;
+  margin-bottom: 1.4rem;
+}
+
+.lede-note { font-size: .98rem; font-weight: 500; }
+.sep { color: var(--rule-strong); margin: 0 .7rem; }
+
+.ulink {
+  color: var(--accent);
+  border-bottom: 2px solid var(--accent-soft);
+  padding-bottom: 1px;
+  transition: border-color .16s ease;
+}
+.ulink:hover { border-bottom-color: currentColor; }
+.ulink.is-off { color: var(--faint); border-bottom-color: transparent; cursor: default; }
+
+/* ---------- 7. BLOCKS ----------
+   The section number is large and sits in the margin, aligned to the
+   heading. It is the loudest piece of furniture on the page. */
+
+.block {
+  padding: clamp(40px, 5.5vw, 62px) 0;
+  border-top: 2px solid var(--rule-strong);
+}
+
+.block-head {
+  display: grid;
+  grid-template-columns: 4.6rem minmax(0, 1fr);
+  align-items: baseline;
+  margin-bottom: 1.6rem;
+}
+
+.block-num {
+  font-size: 2.1rem;
+  color: var(--accent);
+  line-height: 1;
+}
+
+.block-title {
+  font-family: var(--display);
+  font-size: clamp(1.6rem, 2.7vw, 2.1rem);
+  font-weight: 700;
+  font-variation-settings: "SOFT" 40, "WONK" 1;
+  line-height: 1.15;
+  letter-spacing: -.015em;
+}
+
+.block-body { padding-left: 4.6rem; }
+
+.prose p { color: var(--muted); max-width: 56ch; margin-bottom: 1.05rem; }
+.prose p:last-child { margin-bottom: 0; }
+
+/* ---------- 8. THE PATH ---------- */
+
+.path .stop {
+  display: grid;
+  grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 1.5rem;
+  padding: 1.5rem 0;
+  border-top: 1px solid var(--rule);
+}
+.path .stop:last-child { border-bottom: 1px solid var(--rule); }
+
+.stop-mark { padding-top: .2rem; }
+
+.stop-mark .item-num {
+  display: block;
+  font-size: .85rem;
+  color: var(--faint);
+  margin-bottom: .1rem;
+}
+
+.stop-when {
+  font-family: var(--display);
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.stop-title {
+  font-family: var(--display);
+  font-size: 1.28rem;
+  font-weight: 700;
+  font-variation-settings: "SOFT" 40;
+  line-height: 1.25;
+}
+
+.stop-where {
+  font-size: .92rem;
+  font-weight: 500;
+  color: var(--rose);
+  margin: .15rem 0 .6rem;
+}
+
+.stop-desc { color: var(--muted); font-size: .97rem; max-width: 52ch; }
+
+.stop-points { margin: .85rem 0 0; }
+.stop-points li {
+  position: relative;
+  padding-left: 1.1rem;
+  margin-bottom: .4rem;
+  color: var(--muted);
+  font-size: .94rem;
+  max-width: 54ch;
+}
+.stop-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: .62em;
+  width: 5px;
+  height: 5px;
+  background: var(--rose);
+}
+
+.stop .tags { margin-top: 1rem; }
+
+.stop.is-highlight {
+  border-left: 3px solid var(--accent);
+  padding-left: 1.4rem;
+  margin-left: -1.7rem;
+  background: var(--accent-soft);
+}
+
+/* ---------- 9. NUMBERED ROWS (skills, outside work) ---------- */
+
+.rows .row {
+  display: grid;
+  grid-template-columns: 11rem minmax(0, 1fr);
+  gap: 1.4rem;
+  padding: 1rem 0;
+  border-top: 1px solid var(--rule);
+}
+.rows .row:last-child { border-bottom: 1px solid var(--rule); }
+
+.rows dt {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+  padding-top: .02rem;
+}
+
+.rows dt .item-num {
+  display: inline-block;
+  min-width: 2.4rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--faint);
+}
+
+.rows dd p { color: var(--muted); font-size: .97rem; }
+
+/* ---------- 10. TAGS ----------
+   No boxes. A run of names separated by middots, like a credit line. */
+
+.tags { display: flex; flex-wrap: wrap; align-items: baseline; }
+.tags li { font-size: .95rem; font-weight: 500; color: var(--muted); }
+.tags li:not(:last-child)::after {
+  content: "\00B7";
+  color: var(--rule-strong);
+  margin: 0 .5em;
+}
+
+/* ---------- 11. PROJECTS ---------- */
+
+.work {
+  position: relative;
+  padding: 1.6rem 0;
+  border-top: 1px solid var(--rule);
+}
+.work:last-child { border-bottom: 1px solid var(--rule); }
+
+.work > .item-num {
+  position: absolute;
+  left: -4.6rem;
+  top: 1.95rem;
+  font-size: .85rem;
+  color: var(--faint);
+}
+
+.work-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: .5rem;
+}
+
+.work-title {
+  font-family: var(--display);
+  font-size: 1.35rem;
+  font-weight: 700;
+  font-variation-settings: "SOFT" 40;
+  line-height: 1.2;
+}
+
+.work-status {
+  flex-shrink: 0;
+  font-size: .87rem;
+  font-weight: 600;
+  color: var(--rose);
+}
+.work-status.is-live { color: var(--moss); }
+
+.work-desc { color: var(--muted); font-size: .97rem; max-width: 54ch; margin-bottom: .9rem; }
+.work-links { margin-top: 1rem; font-size: .95rem; font-weight: 500; }
+
+/* ---------- 12. CONTACT ----------
+   Full-width rows. The whole row fills with copper on hover, rather
+   than running a dotted leader between label and value. */
+
+.channels { border-top: 1px solid var(--rule); }
+.channels li { border-bottom: 1px solid var(--rule); }
+
+.channels a {
+  display: grid;
+  grid-template-columns: 4.6rem minmax(0, 1fr) 2rem;
+  align-items: center;
+  gap: 1rem;
+  padding: 1.15rem 1.1rem 1.15rem 0;
+  margin-left: -4.6rem;
+  padding-left: 4.6rem;
+  transition: background-color .16s ease, color .16s ease;
+}
+
+.channels a:hover { background: var(--accent); color: var(--accent-text); }
+
+.ch-num { font-size: .85rem; color: var(--faint); }
+.channels a:hover .ch-num { color: var(--accent-text); }
+
+.ch-text { display: flex; flex-direction: column; min-width: 0; }
+
+.ch-label { font-size: .85rem; font-weight: 600; color: var(--faint); }
+.channels a:hover .ch-label { color: var(--accent-text); }
+
+.ch-value {
+  font-family: var(--display);
+  font-size: 1.22rem;
+  font-weight: 600;
+  font-variation-settings: "SOFT" 40;
+  line-height: 1.3;
+  color: var(--text);
+  word-break: break-word;
+}
+.channels a:hover .ch-value { color: var(--accent-text); }
+
+.ch-arrow {
+  justify-self: end;
+  font-size: 1.15rem;
+  color: var(--accent);
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity .16s ease, transform .16s ease, color .16s ease;
+}
+.channels a:hover .ch-arrow { opacity: 1; transform: none; color: var(--accent-text); }
+
+/* ---------- 13. COLOPHON ---------- */
+
+.colophon {
+  border-top: 2px solid var(--rule-strong);
+  margin-top: clamp(40px, 5.5vw, 62px);
+  padding-top: 1.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .4rem 1.5rem;
+  font-size: .87rem;
+  color: var(--faint);
+}
+
+/* ---------- 14. RESPONSIVE ---------- */
+
+@media (max-width: 1020px) {
+  .layout { display: block; }
+
+  .rail { border-right: none; border-bottom: 2px solid var(--rule-strong); }
+
+  .rail-inner {
+    position: static;
+    height: auto;
+    padding: 34px 26px 22px;
+    display: block;
+  }
+
+  .name { font-size: 2.4rem; margin-bottom: .4rem; }
+  .name span { display: inline; }
+
+  .identity { margin-bottom: 0; }
+  .place { display: inline; }
+
+  .contents { margin-top: 1.4rem; }
+  .contents-label { display: none; }
+
+  .contents-list { display: flex; flex-wrap: wrap; gap: 0 1.5rem; }
+  .contents-list a,
+  .pending { border-bottom: none; padding: .3rem 0 .3rem 1.4rem; }
+  .pending em { float: none; margin-left: .4rem; }
+
+  .rail-foot {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .6rem 1.4rem;
+    margin-top: 1.3rem;
+    padding-top: 1.1rem;
+    border-top: 1px solid var(--rule);
+  }
+  .theme-toggle { margin-top: 0; margin-left: auto; }
+
+  main { padding: 34px 26px 60px; max-width: none; }
+
+  .block-head { grid-template-columns: 3.2rem minmax(0, 1fr); }
+  .block-num { font-size: 1.7rem; }
+  .block-body { padding-left: 0; }
+
+  .work > .item-num { position: static; display: block; margin-bottom: .3rem; }
+
+  .stop.is-highlight { margin-left: 0; padding-left: 1.1rem; }
+
+  .channels a {
+    margin-left: 0;
+    padding-left: 1rem;
+    grid-template-columns: 3.4rem minmax(0, 1fr) 1.6rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .rows .row,
+  .path .stop { grid-template-columns: 1fr; gap: .45rem; }
+
+  .stop-mark { display: flex; align-items: baseline; gap: .7rem; padding-top: 0; }
+  .stop-mark .item-num { margin-bottom: 0; }
+
+  .rows dt .item-num { min-width: 2rem; }
+
+  .channels a { grid-template-columns: 2.8rem minmax(0, 1fr) 1.4rem; gap: .7rem; }
+  .ch-value { font-size: 1.08rem; }
+  .ch-arrow { opacity: 1; transform: none; }
+
+  .lede { font-size: 1.75rem; }
+}
