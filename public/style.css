@@ -584,8 +584,15 @@ main {
     grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
     gap: 0 1.5rem;
   }
+  /* No numerals on phones. They duplicate the section numbers, nobody
+     navigates by number, and they cost width in the tightest layout.
+     The desktop rail keeps them, where there's room and a "Contents"
+     heading to justify them. */
+  .contents-list a::before,
+  .pending::before { content: none; }
+
   .contents-list a,
-  .pending { padding: .55rem 0 .55rem 1.5rem; }
+  .pending { padding: .55rem 0; }
   .pending em { float: none; margin-left: .45rem; }
 
   .rail-foot {
