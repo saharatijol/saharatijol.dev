@@ -576,16 +576,23 @@ main {
   .contents { margin-top: 1.4rem; }
   .contents-label { display: none; }
 
-  .contents-list { display: flex; flex-wrap: wrap; gap: 0 1.5rem; }
+  /* A grid, so entries line up in columns instead of wrapping raggedly.
+     auto-fit means wide tablets get 4-5 columns and phones get 2. The rules
+     under each entry keep it reading as an index, same as the desktop rail. */
+  .contents-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0 1.5rem;
+  }
   .contents-list a,
-  .pending { border-bottom: none; padding: .3rem 0 .3rem 1.4rem; }
-  .pending em { float: none; margin-left: .4rem; }
+  .pending { padding: .55rem 0 .55rem 1.5rem; }
+  .pending em { float: none; margin-left: .45rem; }
 
   .rail-foot {
     flex-direction: row;
     align-items: center;
     flex-wrap: wrap;
-    gap: .6rem 1.4rem;
+    gap: .55rem 1.4rem;
     margin-top: 1.3rem;
     padding-top: 1.1rem;
     border-top: 1px solid var(--rule);
@@ -623,4 +630,8 @@ main {
   .ch-arrow { opacity: 1; transform: none; }
 
   .lede { font-size: 1.75rem; }
+
+  /* Once the foot wraps onto two lines, margin-left:auto strands the toggle
+     on the far right. Let it sit with everything else instead. */
+  .theme-toggle { margin-left: 0; }
 }
