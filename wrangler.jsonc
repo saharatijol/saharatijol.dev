@@ -1,0 +1,10 @@
+{
+  // Cloudflare Workers config. Everything in public/ is served as a static
+  // site; there is no server-side code. The files beside this one (README,
+  // .gitignore) sit outside public/ so they are never published.
+  "name": "saharatijol-dev",
+  "compatibility_date": "2026-09-27",
+  "assets": {
+    "directory": "./public"
+  }
+}
