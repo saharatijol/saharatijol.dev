@@ -334,16 +334,16 @@ main {
 .prose p { color: var(--muted); max-width: 56ch; margin-bottom: 1.05rem; }
 .prose p:last-child { margin-bottom: 0; }
 
-/* ---------- 8. THE PATH ---------- */
+/* ---------- 8. CAREER ---------- */
 
-.path .stop {
+.career .stop {
   display: grid;
   grid-template-columns: 6rem minmax(0, 1fr);
   gap: 1.5rem;
   padding: 1.5rem 0;
   border-top: 1px solid var(--rule);
 }
-.path .stop:last-child { border-bottom: 1px solid var(--rule); }
+.career .stop:last-child { border-bottom: 1px solid var(--rule); }
 
 .stop-mark { padding-top: .2rem; }
 
@@ -611,7 +611,7 @@ main {
 
 @media (max-width: 640px) {
   .rows .row,
-  .path .stop { grid-template-columns: 1fr; gap: .45rem; }
+  .career .stop { grid-template-columns: 1fr; gap: .45rem; }
 
   .stop-mark { display: flex; align-items: baseline; gap: .7rem; padding-top: 0; }
   .stop-mark .item-num { margin-bottom: 0; }
