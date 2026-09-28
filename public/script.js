@@ -2,7 +2,7 @@
    Sahara Tijol, portfolio script
 
    Three small jobs:
-     1. The paper/night theme toggle, remembered between visits
+     1. The light/dark theme toggle, remembered between visits
      2. Marking the contents entry for the section you're reading
      3. The year in the colophon
 
@@ -11,7 +11,7 @@
    ========================================================= */
 
 /* ---------- 1. THEME TOGGLE ----------
-   The theme lives on <html data-theme="paper"> or "night", and the CSS
+   The theme lives on <html data-theme="light"> or "dark", and the CSS
    reads it. The choice is saved so it survives a refresh.
 
    localStorage throws in private browsing or with cookies blocked, so
@@ -26,8 +26,8 @@ function setTheme(theme) {
   root.setAttribute('data-theme', theme);
 
   // The button names where it will take you, not where you are.
-  const next = theme === 'paper' ? 'night' : 'paper';
-  themeWord.textContent = next === 'night' ? 'Night' : 'Paper';
+  const next = theme === 'light' ? 'dark' : 'light';
+  themeWord.textContent = next === 'dark' ? 'Dark' : 'Light';
   themeToggle.setAttribute('aria-label', `Switch to the ${next} theme`);
 
   try {
@@ -38,11 +38,11 @@ function setTheme(theme) {
 }
 
 themeToggle.addEventListener('click', () => {
-  setTheme(root.getAttribute('data-theme') === 'paper' ? 'night' : 'paper');
+  setTheme(root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
 });
 
 // Match the button's label to whichever theme loaded.
-setTheme(root.getAttribute('data-theme') || 'paper');
+setTheme(root.getAttribute('data-theme') || 'light');
 
 /* ---------- 2. ACTIVE CONTENTS ENTRY ----------
    IntersectionObserver reports when a section crosses the viewport. The

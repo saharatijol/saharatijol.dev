@@ -10,13 +10,13 @@
    uppercase tracking, no italics, no monospace.
 
    Type: Fraunces (display and numerals) and Work Sans (everything else).
-   Themes: "paper" (warm, default) and "night". No gradients.
+   Themes: "light" (warm, default) and "dark". No gradients.
    ========================================================= */
 
 /* ---------- 1. TOKENS ---------- */
 
 :root,
-:root[data-theme="paper"] {
+:root[data-theme="light"] {
   --bg:          #F4EDE3;  /* warm paper */
   --raised:      #FBF6EF;
   --rule:        #E2D6C6;
@@ -26,14 +26,14 @@
   --muted:       #364156;  /* Charcoal Blue */
   --faint:       #6E5F51;
 
-  --accent:      #AF4226;  /* Rosy Copper, deepened to hold on paper */
+  --accent:      #AF4226;  /* Rosy Copper, deepened to hold on the warm bg */
   --accent-soft: rgba(175, 66, 38, .10);
   --accent-text: #FBF6EF;
   --rose:        #7D4E57;  /* Burnt Rose */
   --moss:        #55654A;
 }
 
-:root[data-theme="night"] {
+:root[data-theme="dark"] {
   --bg:          #11151C;  /* Ink Black */
   --raised:      #212D40;  /* Deep Space Blue */
   --rule:        #283242;
@@ -269,7 +269,7 @@ main {
   background: var(--rose);
   transition: transform .2s ease, background-color .2s ease;
 }
-:root[data-theme="night"] .theme-knob { transform: translateX(15px); background: var(--accent); }
+:root[data-theme="dark"] .theme-knob { transform: translateX(15px); background: var(--accent); }
 
 /* ---------- 6. OPENING ---------- */
 

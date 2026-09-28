@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="paper">
+<html lang="en" data-theme="light">
 
 <head>
   <meta charset="UTF-8">
@@ -29,19 +29,23 @@
 
   <!--
     Runs before the page paints so a saved theme doesn't flash the other one first.
-    "paper" is the warm default; "night" is the dark alternate.
+    "light" is the warm default; "dark" is the alternate.
   -->
   <script>
     (function () {
       try {
         var saved = localStorage.getItem('theme');
-        if (saved === 'paper' || saved === 'night') {
+        /* These two were once called "paper" and "night". Translate an old
+           saved choice so a returning visitor keeps the theme they picked. */
+        if (saved === 'paper') saved = 'light';
+        if (saved === 'night') saved = 'dark';
+        if (saved === 'light' || saved === 'dark') {
           document.documentElement.setAttribute('data-theme', saved);
         } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-          document.documentElement.setAttribute('data-theme', 'night');
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
       } catch (err) {
-        /* No storage available. The paper theme stands. */
+        /* No storage available. The light theme stands. */
       }
     })();
   </script>
@@ -93,9 +97,9 @@
         <div class="rail-foot">
           <p class="availability"><span class="tick" aria-hidden="true"></span>Open to junior roles</p>
           <p class="veteran">U.S. Navy veteran</p>
-          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to the night theme">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to the dark theme">
             <span class="theme-track" aria-hidden="true"><span class="theme-knob"></span></span>
-            <span class="theme-word" id="themeWord">Night</span>
+            <span class="theme-word" id="themeWord">Dark</span>
           </button>
         </div>
 
